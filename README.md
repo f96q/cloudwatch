@@ -7,9 +7,9 @@ Usage
 
 Create Alarm.
 
-* CPUUtilization > 90
-* MemoryUtilization > 90
-* DiskSpaceUtilization > 90
+* CPUUtilization > 80
+* MemoryUtilization > 80
+* DiskSpaceUtilization > 80
 
 ```json
 {
@@ -24,6 +24,24 @@ Create Alarm.
     "insufficient_data_actions": [
       "arn:aws:sns:ap-northeast-1:580183201712:alert-your-app-name"
     ]
+  }
+}
+```
+
+##### Customize Threshold
+
+```json
+{
+  "cloudwatch": {
+    "cpu_utilization": {
+      "threshold": 90
+    },
+    "memory_utilization": {
+      "threshold": 90
+    },
+    "disk_space_utilization": {
+      "threshold": 90
+    }
   }
 }
 ```

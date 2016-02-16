@@ -19,7 +19,7 @@ ok_actions = actions_option('--ok-actions', node[:cloudwatch][:ok_actions])
 alarm_actions = actions_option('--alarm-actions', node[:cloudwatch][:alarm_actions])
 insufficient_data_actions = actions_option('--insufficient-data-actions', node[:cloudwatch][:insufficient_data_actions])
 
-bash 'CPUUtilization > 90' do
+bash 'CPUUtilization' do
   code <<-END
     aws cloudwatch put-metric-alarm \
     --region ap-northeast-1 \
@@ -28,7 +28,7 @@ bash 'CPUUtilization > 90' do
     --metric-name CPUUtilization \
     --dimensions Name=InstanceId,Value=#{aws_instance_id} \
     --statistic Maximum \
-    --threshold 90 \
+    --threshold #{node[:cloudwatch][:cpu_utilization][:threshold]} \
     --unit Percent \
     --period 300 \
     --evaluation-periods 1 \
@@ -39,7 +39,7 @@ bash 'CPUUtilization > 90' do
   END
 end
 
-bash 'MemoryUtilization > 90' do
+bash 'MemoryUtilization' do
   code <<-END
     aws cloudwatch put-metric-alarm \
     --region ap-northeast-1 \
@@ -48,7 +48,7 @@ bash 'MemoryUtilization > 90' do
     --metric-name MemoryUtilization \
     --dimensions Name=InstanceId,Value=#{aws_instance_id} \
     --statistic Maximum \
-    --threshold 90 \
+    --threshold #{node[:cloudwatch][:memory_utilization][:threshold]} \
     --unit Percent \
     --period 300 \
     --evaluation-periods 1 \
@@ -59,7 +59,7 @@ bash 'MemoryUtilization > 90' do
   END
 end
 
-bash 'DiskSpaceUtilization > 90' do
+bash 'DiskSpaceUtilization' do
   code <<-END
     aws cloudwatch put-metric-alarm \
     --region ap-northeast-1 \
@@ -68,7 +68,7 @@ bash 'DiskSpaceUtilization > 90' do
     --metric-name DiskSpaceUtilization \
     --dimensions '[{"Name":"InstanceId","Value":"#{aws_instance_id}"},{"Name":"Filesystem","Value":"/dev/xvda1"},{"Name":"MountPath","Value":"/"}]' \
     --statistic Maximum \
-    --threshold 90 \
+    --threshold #{node[:cloudwatch][:disk_space_utilization][:threshold]} \
     --unit Percent \
     --period 300 \
     --evaluation-periods 1 \
